@@ -6,23 +6,26 @@ module tube(h, r, t) {
     }
 }
 
-module notcher(w, d, h) {
-    scale([4/5,1,3/5]) {
-        translate([-w,+h/2,-d]) {
-	    rotate([90,0,0]) {
-		difference() {
-		    union() {
-			minkowski() {
-			    cube([w,h,d/2]);
-			    translate([w/9,w/9,0]) cylinder(h=d/2, r=w/9);
-			}
-			translate([w,h+w/9,0]) cube([w*3/9,w/9,d]);
-			translate([-w/9,h+w/9,0]) cube([w*3/9,w/9,d]);
-		    }
-		    translate([-w/9,h+w/9,0]) cylinder(h=d, r=w/9);
-		    translate([w+w*3/9,h+w/9,0]) cylinder(h=d, r=w/9);
-		}
-	    }
+module notcher(x, y, z) {
+    rotate([180,0,90]) {
+        translate([-x/2, -y, -z]) {
+            difference() {
+                union() {
+                    minkowski() {
+                        translate([0,0,z-x*.1])
+                            rotate([-90,0,0]) cylinder(h=1,r=x*.1);
+                        translate([x*.1,0,x*.2])
+                            cube([x*.8,y-1,z-x*.2]);
+                    }
+                    translate([-x*.1,0,z]) cube([x*.2,y,x*.1]);
+                    translate([x*.9,0,z]) cube([x*.2,y,x*.1]);
+                }
+                translate([-x*0.1,-y*0.0005,z+x*.1])
+                    rotate([-90,0,0]) cylinder(h=y*1.001, r=x*.1);
+                translate([x*1.1,-y*0.0005,z+x*.1])
+                    rotate([-90,0,0]) cylinder(h=y*1.001, r=x*.1);
+                translate([-x*0.1,0,0]) cube([x*1.2,y,z]);
+            }
         }
     }
 }
